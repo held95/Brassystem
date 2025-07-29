@@ -19,13 +19,12 @@ from tabulate import tabulate
 # ========================= Funções auxiliares =========================
 
 def normalizar_texto(texto):
+    if not isinstance(texto, str):
+        return ''
     texto = unicodedata.normalize('NFKD', texto)
-    texto = ''.join([c for c in texto if not unicodedata.combining(c)])
-    texto = texto.upper().strip()
-    texto = re.sub(r'\b\d{1,2}[-:hH]\d{2}\b', '', texto)
-    texto = re.sub(r'\b\d{3,4}[Hh]?\b', '', texto)
-    texto = re.sub(r'\s+', ' ', texto).strip()
-    return texto
+    texto = texto.encode('ASCII', 'ignore').decode('utf-8')
+    return texto.lower().strip()
+
 
 def extrair_nomes_com_horario(linha):
     nomes_encontrados = []
